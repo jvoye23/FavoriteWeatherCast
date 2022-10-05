@@ -1,0 +1,172 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.voye.favoriteweathercasts.presentation.WeatherViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/currentDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@{viewModel.currentDateTime}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="27. April, 23:13" />
+
+            <TextView
+                android:id="@+id/maxDailyTempLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/max_daily_temp_label"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/currentDateTextView" />
+
+            <TextView
+                android:id="@+id/maxDailyTempTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text='@{viewModel.todayMaxTemperature + " °C"}'
+                app:layout_constraintBottom_toBottomOf="@+id/maxDailyTempLabel"
+                app:layout_constraintStart_toEndOf="@+id/maxDailyTempLabel"
+                tools:text="28.4" />
+
+            <TextView
+                android:id="@+id/minDailyTempLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/min_daily_temp_label"
+                app:layout_constraintBottom_toBottomOf="@+id/maxDailyTempTextView"
+                app:layout_constraintStart_toEndOf="@+id/maxDailyTempTextView" />
+
+            <TextView
+                android:id="@+id/minDailyTempTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text='@{viewModel.todayMinTemperature + " °C"}'
+                app:layout_constraintBottom_toBottomOf="@+id/minDailyTempLabel"
+                app:layout_constraintStart_toEndOf="@+id/minDailyTempLabel"
+                tools:text="7.0" />
+
+            <TextView
+                android:id="@+id/currentTempTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text='@{viewModel.currentTemperature.toString() + " °C"}'
+                android:textSize="60sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/maxDailyTempLabel"
+                tools:text="13°C" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="109dp"
+                android:layout_height="94dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@{viewModel.weatherIconPath}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.661"
+                app:layout_constraintStart_toEndOf="@+id/currentTempTextView"
+                app:layout_constraintTop_toBottomOf="@+id/minDailyTempLabel" />
+
+            <TextView
+                android:id="@+id/currentFeelsLikeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/currentFeelsLikeLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/currentTempTextView" />
+
+            <TextView
+                android:id="@+id/currentFeelsLikeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text='@{viewModel.currentFeelsLike.toString() + " °C" }'
+                app:layout_constraintStart_toEndOf="@+id/currentFeelsLikeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/currentTempTextView"
+                tools:text="13°C" />
+
+            <TextView
+                android:id="@+id/weatherDescriptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.weatherDescription}"
+                app:layout_constraintBaseline_toBaselineOf="@+id/currentFeelsLikeLabel"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                tools:text="Clear Sky" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hourly_forecast_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="300dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />/>
+
+            <Button
+                android:id="@+id/my_location_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="16dp"
+                android:text="My Location"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.466"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="24dp"
+                android:text="@{viewModel.locationCity}"
+                app:layout_constraintBottom_toTopOf="@+id/my_location_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hourly_forecast_list" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</layout>
