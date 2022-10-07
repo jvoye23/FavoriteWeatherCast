@@ -4,18 +4,15 @@ import android.app.SearchManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.voye.favoriteweathercasts.databinding.ActivityMainBinding
 import com.voye.favoriteweathercasts.presentation.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.jar.Manifest
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -27,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             ActivityResultContracts.RequestMultiplePermissions()
         ){
             viewModel.loadWeatherInfo()
+            viewModel.loadLocationName()
         }
         permissionLauncher.launch(arrayOf(
             android.Manifest.permission.ACCESS_FINE_LOCATION,

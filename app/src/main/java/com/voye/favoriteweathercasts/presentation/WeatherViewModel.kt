@@ -114,18 +114,6 @@ class WeatherViewModel @Inject constructor(
         get() = _geocoding
 
 
-
-    /**
-     * Call loadWeatherInfo() on init so the data will display immediately.
-     */
-    init { GlobalScope.launch {
-        loadLocationName()
-        loadWeatherInfo()
-
-        }
-    }
-
-
     suspend fun getMyLocation():  String{
         val location = locationTracker.getCurrentLocation()
         var myLocation: String = "My location is lon: ${location!!.longitude}, lan: ${location!!.latitude}"
@@ -198,7 +186,7 @@ class WeatherViewModel @Inject constructor(
                 }
             }
 
-            _myLocation.value = "My location is latitude: ${location!!.latitude}, longitude: ${location!!.longitude}"
+            //_myLocation.value = "My location is latitude: ${location!!.latitude}, longitude: ${location!!.longitude}"
             _currentTemperature.value = weatherDataResponse.value?.current?.temp?.let { round(it).toInt() }
             _currentFeelsLike.value = weatherDataResponse.value?.current?.feels_like?.let { round(it).toInt() }
 
