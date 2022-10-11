@@ -2,6 +2,7 @@ package com.voye.favoriteweathercasts
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -45,7 +46,9 @@ class MainActivity : AppCompatActivity() {
 
         val mySearchButton = binding.searchButton
         mySearchButton.setOnClickListener {
+
             onSearchRequested()
+
             //binding.searchTextView.text = "Hello World"
 
         }

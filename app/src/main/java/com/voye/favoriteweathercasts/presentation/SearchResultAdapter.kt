@@ -29,6 +29,7 @@ class SearchResultAdapter: RecyclerView.Adapter<SearchResultAdapter.ViewHolder>(
     }
 
     private val asyncListDiffer = AsyncListDiffer(this, diffUtil)
+
     fun saveData(dataResponse: List<CoordinatesByLocationName>){
         asyncListDiffer.submitList(dataResponse)
     }
@@ -42,10 +43,10 @@ class SearchResultAdapter: RecyclerView.Adapter<SearchResultAdapter.ViewHolder>(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = asyncListDiffer.currentList[position]
-        val cityName = data.name
+        /*val cityName = data.name
         val cityState= data.state
-        val cityCountry = data.country
-        holder.cityNameTextView.text = cityName + ", " + cityState + ", " + cityCountry
+        val cityCountry = data.country*/
+        holder.cityNameTextView.text = data.name + ", " + data.state + ", " + data.country
     }
 
 

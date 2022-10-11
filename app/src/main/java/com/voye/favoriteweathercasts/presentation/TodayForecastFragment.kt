@@ -53,7 +53,6 @@ class TodayForecastFragment : Fragment() {
 
         //set the adapter to the RecyclerView for hourly forecasts of today
         val adapter = TodayForecastAdapter()
-
         recyclerView = binding.hourlyForecastList
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter

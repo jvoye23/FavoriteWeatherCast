@@ -39,6 +39,9 @@
         <!-- enable the search dialog to send searches to SearchableActivity -->
         <meta-data android:name="android.app.default_searchable"
             android:value=".SearchableActivity"/>
+        <provider
+            android:authorities="com.voye.favoriteweathercasts.provider.MySuggestionProvider"
+            android:name=".provider.MySuggestionProvider"/>
     </application>
 
 </manifest>
