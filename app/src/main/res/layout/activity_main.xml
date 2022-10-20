@@ -24,9 +24,7 @@
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_dark"
-                >
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -39,7 +37,7 @@
                     android:background="@drawable/background_border"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:titleTextColor="@color/black">
+                    >
 
 
                     <androidx.appcompat.widget.LinearLayoutCompat
@@ -100,14 +98,12 @@
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/navigation"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@android:color/holo_blue_dark"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:visibility="visible"
                 app:itemIconSize="28dp"
                 app:labelVisibilityMode="labeled"
-                android:layout_gravity="bottom"
-                app:menu="@menu/navigation"
-                >
+                app:menu="@menu/navigation">
 
             </com.google.android.material.bottomnavigation.BottomNavigationView>
 

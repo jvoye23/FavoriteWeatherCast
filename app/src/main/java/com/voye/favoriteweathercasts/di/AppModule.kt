@@ -5,7 +5,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.voye.favoriteweathercasts.data.remote.OldWeatherApi
 import com.voye.favoriteweathercasts.data.remote.WeatherApi
 import dagger.Module
 import dagger.Provides

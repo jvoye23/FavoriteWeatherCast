@@ -2,6 +2,7 @@ package com.voye.favoriteweathercasts.presentation
 
 import android.app.Application
 import android.graphics.drawable.Drawable
+import android.location.Location
 import android.os.Build
 import android.util.Log
 import android.widget.TextView
@@ -113,12 +114,21 @@ class WeatherViewModel @Inject constructor(
     val geocoding: LiveData<List<CoordinatesByLocationName>>
         get() = _geocoding
 
+    private val _myCurrentLatitude = MutableLiveData<Double>()
+    val myCurrentLatitude: LiveData<Double>
+        get() = _myCurrentLatitude
+
+    private val _myCurrentLongitude = MutableLiveData<Double>()
+    val myCurrentLongitude: LiveData<Double>
+        get() = _myCurrentLongitude
+
 
     suspend fun getMyLocation():  String{
         val location = locationTracker.getCurrentLocation()
         var myLocation: String = "My location is lon: ${location!!.longitude}, lan: ${location!!.latitude}"
         return myLocation
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCurrentTime(): String {
@@ -129,6 +139,26 @@ class WeatherViewModel @Inject constructor(
 
         return myDateTime
     }
+
+   /* init {
+        viewModelScope.launch {
+            loadMyLocationLatitude()
+            loadMyLocationLongitude()
+        }
+
+    }
+
+    suspend fun loadMyLocationLatitude() {
+        val location = locationTracker.getCurrentLocation()
+        var latitude = location!!.latitude
+        _myCurrentLatitude.value = latitude
+    }
+
+    suspend fun loadMyLocationLongitude(){
+        val location = locationTracker.getCurrentLocation()
+        var longitude = location!!.longitude
+        _myCurrentLongitude.value = longitude
+    }*/
 
     fun loadLocationName(){
         viewModelScope.launch {
@@ -166,12 +196,13 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    fun loadWeatherInfo() {
+
+    fun loadWeatherInfo(latitude: Double, longitude: Double) {
         viewModelScope.launch {
 
-            val location = locationTracker.getCurrentLocation()
+            //val location = locationTracker.getCurrentLocation()
             val myWeatherDataResponse =
-                location?.let { repository.getWeatherData(it.latitude, it.longitude) }
+                 repository.getWeatherData(latitude, longitude)
 
             Log.d("---->", myWeatherDataResponse.toString())
             when(myWeatherDataResponse){
@@ -179,7 +210,7 @@ class WeatherViewModel @Inject constructor(
 
                     //_weatherDataResponse.postValue(myWeatherDataResponse.value!!)
                     _weatherDataResponse.value = myWeatherDataResponse.value!!
-                    _myLocation.value = "My location is latitude: ${location!!.latitude}, longitude: ${location!!.longitude}"
+                    _myLocation.value = "My location is latitude: ${latitude}, longitude: ${longitude}"
                 }
                 is ApiResource.Error -> {
                     _errorResponse.postValue(myWeatherDataResponse.errorBody.toString())
@@ -238,5 +269,9 @@ class WeatherViewModel @Inject constructor(
         }
 
         return _weatherIconPath.value
+    }
+
+    fun setCurrentLocationText(name: String){
+        _currentLocationText.value = name
     }
 }
