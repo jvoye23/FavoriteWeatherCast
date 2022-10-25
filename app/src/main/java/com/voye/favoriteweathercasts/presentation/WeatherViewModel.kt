@@ -43,6 +43,9 @@ class WeatherViewModel @Inject constructor(
     private val application: Application
 ): ViewModel() {
 
+    var state = WeatherState(null, true, null)
+
+
     private val _weatherDataResponse = MutableLiveData<WeatherData>()
     val weatherDataResponse: LiveData<WeatherData> get() =_weatherDataResponse
 
@@ -122,11 +125,18 @@ class WeatherViewModel @Inject constructor(
     val myCurrentLongitude: LiveData<Double>
         get() = _myCurrentLongitude
 
+    private val _progressBarIndicator = MutableLiveData<Boolean>()
+    val progressBarIndicator: LiveData<Boolean>
+        get() = _progressBarIndicator
 
-    suspend fun getMyLocation():  String{
-        val location = locationTracker.getCurrentLocation()
-        var myLocation: String = "My location is lon: ${location!!.longitude}, lan: ${location!!.latitude}"
-        return myLocation
+
+    fun getMyLocation() {
+        viewModelScope.launch {
+            val location = locationTracker.getCurrentLocation()
+            //var myLocation: String = "My location is lon: ${location!!.longitude}, lan: ${location!!.latitude}"
+            _myCurrentLatitude.value = location?.latitude
+            _myCurrentLongitude.value = location?.longitude
+        }
     }
 
 
@@ -138,47 +148,6 @@ class WeatherViewModel @Inject constructor(
         myDateTime = "${currentTime.format(timeFormatter)} "
 
         return myDateTime
-    }
-
-   /* init {
-        viewModelScope.launch {
-            loadMyLocationLatitude()
-            loadMyLocationLongitude()
-        }
-
-    }
-
-    suspend fun loadMyLocationLatitude() {
-        val location = locationTracker.getCurrentLocation()
-        var latitude = location!!.latitude
-        _myCurrentLatitude.value = latitude
-    }
-
-    suspend fun loadMyLocationLongitude(){
-        val location = locationTracker.getCurrentLocation()
-        var longitude = location!!.longitude
-        _myCurrentLongitude.value = longitude
-    }*/
-
-    fun loadLocationName(){
-        viewModelScope.launch {
-            val location = locationTracker.getCurrentLocation()
-            val myLocationNameResponse =
-                location?.let { repository.getReverseGeocoding(it.latitude, it.longitude) }
-
-            Log.d("---->", myLocationNameResponse.toString())
-
-            try {
-                Log.d("----Success->", myLocationNameResponse.toString())
-                _locationCity.value = myLocationNameResponse?.get(0)?.name.toString()
-                _locationCountry.value = myLocationNameResponse?.get(0)?.country.toString()
-                Log.d("----LocationCity",myLocationNameResponse?.get(0)?.name.toString())
-                _currentLocationText.value = myLocationNameResponse?.get(0)?.name.toString() + ", " + myLocationNameResponse?.get(0)?.country.toString()
-            } catch (ex: Exception ){
-                Log.d("---->", ex.toString())
-            }
-
-        }
     }
 
     fun loadCoordinates(city: String){
@@ -197,7 +166,11 @@ class WeatherViewModel @Inject constructor(
     }
 
 
+
+
     fun loadWeatherInfo(latitude: Double, longitude: Double) {
+        _progressBarIndicator.value = true
+
         viewModelScope.launch {
 
             //val location = locationTracker.getCurrentLocation()
@@ -210,10 +183,18 @@ class WeatherViewModel @Inject constructor(
 
                     //_weatherDataResponse.postValue(myWeatherDataResponse.value!!)
                     _weatherDataResponse.value = myWeatherDataResponse.value!!
+                    if (_weatherDataResponse.value != null){
+                        _progressBarIndicator.value = false
+                    }
+
+
                     _myLocation.value = "My location is latitude: ${latitude}, longitude: ${longitude}"
                 }
                 is ApiResource.Error -> {
                     _errorResponse.postValue(myWeatherDataResponse.errorBody.toString())
+                    if (_weatherDataResponse.value == null){
+                        _progressBarIndicator.value = true
+                    }
                 }
             }
 

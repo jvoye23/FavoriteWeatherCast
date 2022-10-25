@@ -13,8 +13,28 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progress_bar_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <ProgressBar
+                android:id="@+id/progress_spinner"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -71,19 +91,10 @@
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-                    <!--<androidx.appcompat.widget.SearchView
-                        android:id="@+id/searchView"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:clickable="true"
-                        android:layoutDirection="rtl"
-                        android:textDirection="ltr"
-                        android:focusable="true" />-->
-
                 </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.AppBarLayout>
+
 
             <fragment
                 android:id="@+id/nav_host_fragment"
@@ -94,6 +105,8 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/nav_graph"
                 tools:layout="@layout/fragment_today_forecast" />
+
+
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/navigation"
@@ -107,7 +120,10 @@
 
             </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

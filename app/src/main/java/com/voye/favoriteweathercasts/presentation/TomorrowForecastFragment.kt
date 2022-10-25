@@ -62,17 +62,6 @@ class TomorrowForecastFragment : Fragment() {
 
         }
 
-
-
-        GlobalScope.launch {
-
-            val myLocation = viewModel.getMyLocation()
-            binding.myLocationButton.setOnClickListener {
-                binding.textView2.text = myLocation
-            }
-
-        }
-
         return binding.root
     }
 }

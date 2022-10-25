@@ -1,5 +1,6 @@
 package com.voye.favoriteweathercasts.data.repository
 
+
 import com.voye.favoriteweathercasts.data.mappers.toCoordinatesByLocationNameInfo
 import com.voye.favoriteweathercasts.data.mappers.toDomain
 import com.voye.favoriteweathercasts.data.mappers.toLocationNameInfo
@@ -13,11 +14,14 @@ import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(private val apiService: WeatherApi):
     WeatherRepository {
+
+
     override suspend fun getWeatherData(lat: Double, lon: Double) = safeApiCall {
         apiService.getWeatherData(
             lat = lat,
             lon = lon
         ).toDomain()
+
     }
 
     override suspend fun getReverseGeocoding(lat: Double, lon: Double): List<LocationName> {

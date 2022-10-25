@@ -13,17 +13,27 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+            android:layout_height="?attr/actionBarSize">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-7dp"
-            android:layout_marginBottom="-7dp" />
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/my_autocomplete_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:closeIcon="@null"
+                app:searchHintIcon="@null"
+                app:queryBackground="@null">
+            </androidx.appcompat.widget.SearchView>
 
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-7dp"
+        android:layout_marginBottom="-7dp" />
 
     <ViewAnimator
         android:id="@+id/view_animator"
@@ -38,15 +48,4 @@
 
 
 
-    <!--<SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
 </LinearLayout>
-
