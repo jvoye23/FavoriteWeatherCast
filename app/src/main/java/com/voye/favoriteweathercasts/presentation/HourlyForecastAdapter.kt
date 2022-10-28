@@ -23,13 +23,6 @@ import java.time.ZonedDateTime
 
 class HourlyForecastAdapter: RecyclerView.Adapter<HourlyForecastAdapter.ViewHolder>() {
 
-
-    /*var data = listOf<Hourly>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }*/
-
     private val diffUtil = object: DiffUtil.ItemCallback<Hourly>(){
         override fun areItemsTheSame(
             oldItem: Hourly,

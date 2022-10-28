@@ -14,16 +14,7 @@ import com.voye.favoriteweathercasts.databinding.FragmentFavoritesBinding
  * This [Fragment] will show the recycler view with user's favorite cities.
  */
 
-class FavoritesFragment() : Fragment(), Parcelable {
-    constructor(parcel: Parcel) : this() {
-    }
-
-    /**
-     * Lazily initialize our [FavoriteViewModel].
-     */
-    private val viewModel: FavoritesViewModel by lazy {
-        ViewModelProvider(this).get(FavoritesViewModel::class.java)
-    }
+class FavoritesFragment() : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,25 +25,9 @@ class FavoritesFragment() : Fragment(), Parcelable {
 
         val binding = FragmentFavoritesBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+        //binding.viewModel = viewModel
         return binding.root
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
 
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<FavoritesFragment> {
-        override fun createFromParcel(parcel: Parcel): FavoritesFragment {
-            return FavoritesFragment(parcel)
-        }
-
-        override fun newArray(size: Int): Array<FavoritesFragment?> {
-            return arrayOfNulls(size)
-        }
-    }
 }

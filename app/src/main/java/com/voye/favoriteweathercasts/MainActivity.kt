@@ -14,7 +14,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.android.volley.VolleyLog
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.TypeFilter
@@ -32,7 +35,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navigation: Navigation
+    private lateinit var navController: NavController
     private lateinit var placesClient: PlacesClient
 
 
@@ -50,10 +53,7 @@ class MainActivity : AppCompatActivity() {
                 binding.progressSpinner.visibility = ProgressBar.GONE
                 binding.progressBarBackground.visibility = View.GONE
             }
-
         }
-
-
 
         val bundle = intent.extras
 
@@ -82,12 +82,11 @@ class MainActivity : AppCompatActivity() {
         permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ){
-            //viewModel.loadWeatherInfo(viewModel.myCurrentLatitude.value!!.toDouble(), viewModel.myCurrentLatitude.value!!.toDouble())
-            viewModel.getMyLocation()
-            val latitude = viewModel.myCurrentLatitude.value
-            val longitude = viewModel.myCurrentLatitude.value
-            //viewModel.loadWeatherInfo(latitude!!, longitude!!)
-            viewModel.loadWeatherInfo(53.61322363895992, 10.014878540763116)
+
+            if (bundle == null){
+                viewModel.loadWeatherInfoFromCurrentLocation()
+                viewModel.loadLocationName()
+            }
 
         }
         permissionLauncher.launch(arrayOf(
@@ -96,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         ))
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -115,7 +115,11 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
-        Navigation.findNavController(this, R.id.nav_host_fragment)
+        //Navigation.findNavController(this, R.id.nav_host_fragment)
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        setupWithNavController(binding.bottomNavigationView, navController)
+
+        binding.root
 
 
     }

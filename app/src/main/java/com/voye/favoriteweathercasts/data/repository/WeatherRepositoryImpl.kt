@@ -12,8 +12,9 @@ import com.voye.favoriteweathercasts.domain.location.LocationName
 import com.voye.favoriteweathercasts.domain.repository.WeatherRepository
 import javax.inject.Inject
 
-class WeatherRepositoryImpl @Inject constructor(private val apiService: WeatherApi):
-    WeatherRepository {
+class WeatherRepositoryImpl @Inject constructor(
+    private val apiService: WeatherApi
+    ): WeatherRepository {
 
 
     override suspend fun getWeatherData(lat: Double, lon: Double) = safeApiCall {

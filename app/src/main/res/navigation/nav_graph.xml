@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
     app:startDestination="@id/forecastFragment">
     <fragment
         android:id="@+id/todayForecastFragment"
         android:name="com.voye.favoriteweathercasts.presentation.TodayForecastFragment"
-        android:label="TodayForecastFragment" />
+        android:label="TodayForecastFragment"
+        tools:layout="@layout/fragment_today_forecast"/>
     <fragment
         android:id="@+id/forecastFragment"
         android:name="com.voye.favoriteweathercasts.presentation.ForecastFragment"
-        android:label="ForecastFragment" />
+        android:label="ForecastFragment"
+        tools:layout="@layout/fragment_forecast"/>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.voye.favoriteweathercasts.presentation.FavoritesFragment"
+        android:label="FavoritesFragment"
+        tools:layout="@layout/fragment_favorites"/>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.voye.favoriteweathercasts.presentation.MapsFragment"
+        android:label="MapsFragment"
+        tools:layout="@layout/fragment_maps"/>
 </navigation>

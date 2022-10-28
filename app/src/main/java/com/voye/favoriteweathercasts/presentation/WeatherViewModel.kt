@@ -134,8 +134,12 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
             val location = locationTracker.getCurrentLocation()
             //var myLocation: String = "My location is lon: ${location!!.longitude}, lan: ${location!!.latitude}"
-            _myCurrentLatitude.value = location?.latitude
-            _myCurrentLongitude.value = location?.longitude
+
+            if (location != null){
+                _myCurrentLatitude.value = location.latitude
+                _myCurrentLongitude.value = location.longitude
+            }
+
         }
     }
 
@@ -146,7 +150,6 @@ class WeatherViewModel @Inject constructor(
         val currentTime = LocalDateTime.now()
         val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MMMM, HH:mm")
         myDateTime = "${currentTime.format(timeFormatter)} "
-
         return myDateTime
     }
 
@@ -165,15 +168,85 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
+    fun loadWeatherInfoFromCurrentLocation(){
+        _progressBarIndicator.value = true
 
+        viewModelScope.launch {
 
+            val location = locationTracker.getCurrentLocation()
+            val myWeatherDataResponse =
+                location?.let { repository.getWeatherData(it.latitude, it.longitude) }
+
+            Log.d("---->", myWeatherDataResponse.toString())
+            when(myWeatherDataResponse){
+                is ApiResource.Success -> {
+
+                    //_weatherDataResponse.postValue(myWeatherDataResponse.value!!)
+                    _weatherDataResponse.value = myWeatherDataResponse.value!!
+                    if (_weatherDataResponse.value != null){
+                        _progressBarIndicator.value = false
+                    }
+
+                }
+                is ApiResource.Error -> {
+                    _errorResponse.postValue(myWeatherDataResponse.errorBody.toString())
+                    if (_weatherDataResponse.value == null){
+                        _progressBarIndicator.value = true
+                    }
+                }
+            }
+
+            //_myLocation.value = "My location is latitude: ${location!!.latitude}, longitude: ${location!!.longitude}"
+            _currentTemperature.value = weatherDataResponse.value?.current?.temp?.let { round(it).toInt() }
+            _currentFeelsLike.value = weatherDataResponse.value?.current?.feels_like?.let { round(it).toInt() }
+
+            weatherDataResponse?.value?.daily?.forEachIndexed { index, daily ->
+                dailyMaxTempList.add(index, daily.temp.max)
+            }
+
+            weatherDataResponse?.value?.daily?.forEachIndexed { index, daily ->
+                dailyMinTempList.add(index, daily.temp.min)
+            }
+
+            _todayMaxTemperature.value = dailyMaxTempList[0].toInt()
+            _todayMinTemperature.value = dailyMinTempList[0].toInt()
+
+            weatherDataResponse?.value?.current?.weather?.forEachIndexed { index, weather ->
+                _weatherDescription.value = weather.description
+                _weatherIconString.value = weather.icon
+                setWeatherIconPath(_weatherIconString, getApplication(application))
+
+            }
+        }
+    }
+
+    fun loadLocationName(){
+        viewModelScope.launch {
+            val location = locationTracker.getCurrentLocation()
+            val myLocationNameResponse =
+                location?.let { repository.getReverseGeocoding(it.latitude, it.longitude) }
+
+            Log.d("---->", myLocationNameResponse.toString())
+
+            try {
+                Log.d("----Success->", myLocationNameResponse.toString())
+                _locationCity.value = myLocationNameResponse?.get(0)?.name.toString()
+                _locationCountry.value = myLocationNameResponse?.get(0)?.country.toString()
+                Log.d("----LocationCity",myLocationNameResponse?.get(0)?.name.toString())
+                _currentLocationText.value = myLocationNameResponse?.get(0)?.name.toString() + ", " + myLocationNameResponse?.get(0)?.country.toString()
+            } catch (ex: Exception ){
+                Log.d("---->", ex.toString())
+            }
+
+        }
+    }
 
     fun loadWeatherInfo(latitude: Double, longitude: Double) {
         _progressBarIndicator.value = true
 
         viewModelScope.launch {
 
-            //val location = locationTracker.getCurrentLocation()
+            val location = locationTracker.getCurrentLocation()
             val myWeatherDataResponse =
                  repository.getWeatherData(latitude, longitude)
 

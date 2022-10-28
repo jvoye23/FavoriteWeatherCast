@@ -3,28 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <item
-        android:id="@+id/navigation_forecast"
+        android:id="@+id/forecastFragment"
         android:icon="@drawable/rain_10d"
         android:title="@string/forecast">
-
     </item>
-
-
     <item
-        android:id="@+id/navigation_maps"
+        android:id="@+id/mapsFragment"
         android:icon="@android:drawable/ic_menu_mapmode"
         android:title="@string/maps">
 
     </item>
     <item
-        android:id="@+id/navigation_favorites"
+        android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_baseline_star_24px"
         android:title="@string/title_favorites"/>
-    <item
-        android:id="@+id/navigation_settings"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/title_settings">
-    </item>
-
 
 </menu>

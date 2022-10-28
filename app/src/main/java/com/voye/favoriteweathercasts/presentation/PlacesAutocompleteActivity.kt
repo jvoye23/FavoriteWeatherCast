@@ -6,10 +6,8 @@ import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.SearchView
-import android.widget.ViewAnimator
+import android.view.View
+import android.widget.*
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -33,19 +31,24 @@ import com.google.gson.GsonBuilder
 import com.voye.favoriteweathercasts.BuildConfig
 import com.voye.favoriteweathercasts.MainActivity
 import com.voye.favoriteweathercasts.R
+import com.voye.favoriteweathercasts.data.local.LocationDTO
+import com.voye.favoriteweathercasts.data.local.LocationDataItem
 import com.voye.favoriteweathercasts.utils.GeocodingResult
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import org.json.JSONException
+import java.time.LocalDateTime
 
 @AndroidEntryPoint
 class PlacesAutocompleteActivity: AppCompatActivity() {
 
-    val viewModel: WeatherViewModel by viewModels()
+    private val viewModel: SearchHistoryViewModel by viewModels()
     private val handler = Handler()
-    private val adapter = PlacePredictionAdapter()
+    private val placePredictionAdapter = PlacePredictionAdapter()
+
     private val gson = GsonBuilder().registerTypeAdapter(LatLng::class.java, LatLngAdapter()).create()
 
+    private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private lateinit var queue: RequestQueue
     private lateinit var placesClient: PlacesClient
     private var sessionToken: AutocompleteSessionToken? = null
@@ -54,20 +57,17 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var myAutoCompleteSearchView: androidx.appcompat.widget.SearchView
     private lateinit var toolbar: Toolbar
+    private lateinit var recentSearchTextView: TextView
+    private lateinit var searchHistoryRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
 
         setContentView(R.layout.activity_places_autocomplete)
         setSupportActionBar(findViewById(R.id.toolbar))
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-
-
 
         // Initialize members
         progressBar = findViewById(R.id.progress_bar)
@@ -76,14 +76,24 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         placesClient = Places.createClient(this)
         queue = Volley.newRequestQueue(this)
         toolbar = findViewById(R.id.toolbar)
+        recentSearchTextView = findViewById(R.id.recent_searches_textView)
+        searchHistoryRecyclerView = findViewById(R.id.recent_searches_recycler_view)
+        searchHistoryAdapter = SearchHistoryAdapter(SearchHistoryAdapter.SearchHistoryOnClickListener{
+            clickedLocation ->
+            //Toast.makeText(applicationContext, "${clickedLocation.city}", Toast.LENGTH_LONG).show()
+            showWeatherWithRecentSearch(clickedLocation)
+        })
+
 
         toolbar.setNavigationOnClickListener { v ->
             finish()
         }
 
         initMyAutocompleteSearchView(myAutoCompleteSearchView)
-        initRecyclerView()
+        viewModel.getSearchHistory()
+        initSearchHistoryRecylerView()
 
+        initRecyclerView()
     }
 
 
@@ -107,13 +117,23 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         searchView.isIconified = false
         searchView.requestFocusFromTouch()
         sessionToken = AutocompleteSessionToken.newInstance()
+
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 progressBar.isIndeterminate = true
+
+                if (newText.isEmpty()){
+                    recentSearchTextView.visibility = View.VISIBLE
+                    searchHistoryRecyclerView.visibility = View.VISIBLE
+                } else{
+                    recentSearchTextView.visibility = View.GONE
+                    searchHistoryRecyclerView.visibility = View.GONE
+                }
 
                 // Cancel any previous place prediction requests
                 handler.removeCallbacksAndMessages(null)
@@ -122,7 +142,20 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
                 handler.postDelayed({ getPlacePredictions(newText) }, 300)
                 return true
             }
+
         })
+    }
+
+    private fun initSearchHistoryRecylerView(){
+        val layoutManager = LinearLayoutManager(this)
+        searchHistoryRecyclerView.layoutManager = layoutManager
+        searchHistoryRecyclerView.adapter = searchHistoryAdapter
+        searchHistoryRecyclerView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+        viewModel.recentLocationsList.observe(this){
+            searchHistoryAdapter.saveData(it)
+        }
+
+        //placePredictionAdapter.onPlaceClickListener = { geocodePlaceAndDisplay(it) }
     }
 
 
@@ -131,9 +164,9 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.places_recycler_view)
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
+        recyclerView.adapter = placePredictionAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
-        adapter.onPlaceClickListener = { geocodePlaceAndDisplay(it) }
+        placePredictionAdapter.onPlaceClickListener = { geocodePlaceAndDisplay(it) }
     }
 
     private fun getPlacePredictions(query: String) {
@@ -153,7 +186,7 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         // Perform autocomplete predictions request
         placesClient.findAutocompletePredictions(newRequest).addOnSuccessListener { response ->
             val predictions = response.autocompletePredictions
-            adapter.setPredictions(predictions)
+            placePredictionAdapter.setPredictions(predictions)
             progressBar.isIndeterminate = false
             viewAnimator.displayedChild = if (predictions.isEmpty()) 0 else 1
         }.addOnFailureListener { exception: Exception? ->
@@ -208,26 +241,12 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
             .show()
     }
 
-
-    private fun showWeather(place: AutocompletePrediction, result: GeocodingResult){
-
-        /*val myLatLng = arrayOf<Double>(0.0, 0.0)
-        myLatLng[0] = result.geometry?.location?.latitude!!
-        myLatLng[1] = result.geometry?.location?.longitude!!
-
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.putExtra("NewLatLng", myLatLng )
-        startActivity(intent)*/
-
-        /*//works
-        val myNewCity = place.getFullText(null).toString()
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.putExtra("new_city_key", myNewCity)
-        startActivity(intent)*/
-
-        var latitude = result.geometry?.location?.latitude
-        var longitude = result.geometry?.location?.longitude
-        var cityAndCountry = place.getFullText(null).toString()
+    private fun showWeatherWithRecentSearch(locationDTO: LocationDTO){
+        var latitude = locationDTO.latitude
+        var longitude = locationDTO.longitude
+        var city = locationDTO.city
+        var country = locationDTO.country
+        var cityAndCountry = "${city}, ${country}"
         val bundle = Bundle()
         bundle.putDouble("latitude_key", latitude!!)
         bundle.putDouble("longitude_key", longitude!!)
@@ -236,11 +255,33 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         intent.putExtras(bundle)
         startActivity(intent)
 
-        //viewModel.setCurrentLocationText(cityAndCountry.toString())
-        //viewModel.loadWeatherInfo(13.713326683844912, 100.62713271980004)
-        //viewModel.loadWeatherInfo(latitude!!, longitude!!)
-        //this.finish()
+    }
 
+
+    private fun showWeather(place: AutocompletePrediction, result: GeocodingResult){
+        var latitude = result.geometry?.location?.latitude
+        var longitude = result.geometry?.location?.longitude
+        var city = place.getPrimaryText(null).toString()
+        var country = place.getSecondaryText(null).toString()
+        var cityAndCountry = place.getFullText(null).toString()
+        val bundle = Bundle()
+        bundle.putDouble("latitude_key", latitude!!)
+        bundle.putDouble("longitude_key", longitude!!)
+        bundle.putString("city_and_country_key", cityAndCountry)
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.putExtras(bundle)
+
+        // Save Search Result into Room Database
+        val locationItem = LocationDataItem(
+            city = city,
+            country = country,
+            latitude = latitude,
+            longitude = longitude,
+            created = LocalDateTime.now().toString()
+        )
+        viewModel.saveLocation(locationItem)
+
+        startActivity(intent)
 
     }
 
