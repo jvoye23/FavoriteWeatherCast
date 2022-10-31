@@ -58,7 +58,8 @@ class EightDayForecastAdapter: RecyclerView.Adapter<EightDayForecastAdapter.View
         holder.dailyDescription.text = data.weather[0].description
         holder.dailyMaxTemperature.text = data.temp.max.toInt().toString() + "°C"
         holder.dailyMinTemperature.text = data.temp.min.toInt().toString() + "°C"
-        holder.dailyRain.text = data.rain?.toInt().toString() + "%"
+        //holder.dailyRain.text = data.rain?.toInt().toString() + "%"
+        holder.dailyRain.text = "${(data.pop * 100).toInt()}" + "%"
 
 
 

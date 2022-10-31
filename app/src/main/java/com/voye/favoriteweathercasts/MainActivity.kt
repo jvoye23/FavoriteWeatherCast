@@ -99,19 +99,18 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-
-
         // Set listeners for Autocomplete activity
         val mySearchTextView = binding.searchTextView
-        mySearchTextView.setOnClickListener { startAutocompleteActivity() }
-
-        val mySearchButton = binding.searchButton
-        mySearchButton.setOnClickListener {
-            //onSearchRequested()
+        mySearchTextView.setOnClickListener {
             val intent = Intent(this, PlacesAutocompleteActivity::class.java)
             startActivity(intent)
         }
 
+        val mySearchButton = binding.searchButton
+        mySearchButton.setOnClickListener {
+            val intent = Intent(this, PlacesAutocompleteActivity::class.java)
+            startActivity(intent)
+        }
 
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
@@ -122,56 +121,6 @@ class MainActivity : AppCompatActivity() {
         binding.root
 
 
-    }
-
-    private fun startAutocompleteActivity(){
-        val placeFields = listOf<com.google.android.libraries.places.api.model.Place.Field>(
-            com.google.android.libraries.places.api.model.Place.Field.ID,
-            com.google.android.libraries.places.api.model.Place.Field.LAT_LNG,
-            com.google.android.libraries.places.api.model.Place.Field.NAME)
-        val myTypeFilter: TypeFilter = TypeFilter.CITIES
-
-        val autocompleteIntent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, placeFields)
-            .setHint("Search places")
-            .setTypeFilter(myTypeFilter)
-            .build(this)
-        startActivityForResult(autocompleteIntent, AUTOCOMPLETE_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE && data != null) {
-            when (resultCode) {
-                AutocompleteActivity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        val placeLat = place.latLng.latitude
-                        val placeLon = place.latLng.longitude
-                        Log.i(VolleyLog.TAG, "My Place: ${place.name}, ${place.id}, ${place.latLng}")
-
-                        viewModel.setCurrentLocationText(place.name)
-                        viewModel.loadWeatherInfo(placeLat, placeLon)
-
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Log.i(VolleyLog.TAG, status.statusMessage ?: "")
-                        //responseView.text = status.statusMessage
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    companion object {
-        private const val AUTOCOMPLETE_REQUEST_CODE = 1
     }
 
 }

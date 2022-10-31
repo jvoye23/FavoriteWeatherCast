@@ -123,41 +123,9 @@
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 tools:text="Clear Sky" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/hourly_forecast_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="300dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />/>
 
-            <Button
-                android:id="@+id/my_location_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                android:layout_marginBottom="16dp"
-                android:text="My Location"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.466"
-                app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="24dp"
-                android:text="@{viewModel.locationCity}"
-                app:layout_constraintBottom_toTopOf="@+id/my_location_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hourly_forecast_list" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

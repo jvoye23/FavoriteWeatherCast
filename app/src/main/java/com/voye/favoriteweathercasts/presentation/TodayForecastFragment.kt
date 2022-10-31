@@ -48,11 +48,10 @@ class TodayForecastFragment : Fragment() {
         binding.viewModel = viewModel
 
         //binding.imageView.setImageDrawable(viewModel.weatherIconPath.value)
-        Log.d("IMAGE", "weather icon path = ${viewModel.weatherIconPath.value}")
-        Log.d("icon string", "icon string = ${viewModel.weatherIconString}")
+
 
         //set the adapter to the RecyclerView for hourly forecasts of today
-        val adapter = TodayForecastAdapter()
+        /*val adapter = TodayForecastAdapter()
         recyclerView = binding.hourlyForecastList
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
@@ -60,7 +59,7 @@ class TodayForecastFragment : Fragment() {
         //set the data to the adapter for the RecyclerView to show
         viewModel.weatherDataResponse.observe(viewLifecycleOwner) {
             adapter.saveData(it.hourly)
-        }
+        }*/
         return binding.root
 
     }

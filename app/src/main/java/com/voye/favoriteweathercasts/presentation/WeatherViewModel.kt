@@ -43,8 +43,6 @@ class WeatherViewModel @Inject constructor(
     private val application: Application
 ): ViewModel() {
 
-    var state = WeatherState(null, true, null)
-
 
     private val _weatherDataResponse = MutableLiveData<WeatherData>()
     val weatherDataResponse: LiveData<WeatherData> get() =_weatherDataResponse
@@ -177,11 +175,12 @@ class WeatherViewModel @Inject constructor(
             val myWeatherDataResponse =
                 location?.let { repository.getWeatherData(it.latitude, it.longitude) }
 
+            Log.d("---->Current Location", "latitude: ${location?.latitude.toString()}" +
+                    "longitude: ${location?.longitude.toString()}" )
+
             Log.d("---->", myWeatherDataResponse.toString())
             when(myWeatherDataResponse){
                 is ApiResource.Success -> {
-
-                    //_weatherDataResponse.postValue(myWeatherDataResponse.value!!)
                     _weatherDataResponse.value = myWeatherDataResponse.value!!
                     if (_weatherDataResponse.value != null){
                         _progressBarIndicator.value = false

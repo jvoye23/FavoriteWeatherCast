@@ -49,19 +49,31 @@ class HourlyForecastAdapter: RecyclerView.Adapter<HourlyForecastAdapter.ViewHold
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(R.layout.list_item_hourly_forecast, parent, false)
+            .inflate(R.layout.list_item_hourly_vertical_forecast, parent, false)
         return ViewHolder(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = asyncListDiffer.currentList[position]
+        val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, d. MMM")
+        val dayOfTheWeek = DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(data.dt))
+        val localZoneDateTimeDay = ZonedDateTime.parse(dayOfTheWeek).withZoneSameInstant(ZoneId.systemDefault())
         holder.hourlyTemperature.text = data.temp.let { round(it).toInt() }.toString() + " °C"
 
-        //2022-05-24T11:00:00Z
+
         val hour = DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(data.dt))
-        val localZoneDateTime = ZonedDateTime.parse(hour).withZoneSameInstant(ZoneId.systemDefault())
-        holder.hour.text = localZoneDateTime.toString().substring(11, 16)
+        val localZoneDateTimeHour = ZonedDateTime.parse(hour).withZoneSameInstant(ZoneId.systemDefault())
+        //11:00
+        //holder.hour.text = localZoneDateTime.toString().substring(11, 16)
+
+        //2022-05-24T11:00:00Z
+        //holder.hour.text = localZoneDateTime.toString()
+        //holder.hour.text = localZoneDateTime.toString().substring()
+
+        holder.hour.text = localZoneDateTimeDay.format(timeFormatter) + " " + localZoneDateTimeHour.toString().substring(11, 16)
+
+
         holder.hourlyDescription.text = data.weather[0].description
         holder.hourlyRain.text = "${(data.pop * 100).toInt()}" + "%"
         holder.hourlyWeatherIcon.setImageResource(when(data.weather[0].icon) {

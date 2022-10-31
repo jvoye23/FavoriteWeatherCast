@@ -22,4 +22,13 @@
         android:layout_marginTop="2dp"
         tools:text="123 Main Street, San Francisco, CA USA" />
 
+    <Button
+        android:id="@+id/save_to_favorites_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save to Favorites"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"/>
+
+
 </LinearLayout>

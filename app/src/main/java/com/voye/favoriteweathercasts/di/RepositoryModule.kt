@@ -1,7 +1,9 @@
 package com.voye.favoriteweathercasts.di
 
+import com.voye.favoriteweathercasts.data.repository.FavoriteLocalLocationsRepositoryImpl
 import com.voye.favoriteweathercasts.data.repository.LocalLocationsRepositoryImpl
 import com.voye.favoriteweathercasts.data.repository.WeatherRepositoryImpl
+import com.voye.favoriteweathercasts.domain.repository.FavoriteLocationRepository
 import com.voye.favoriteweathercasts.domain.repository.LocationRepository
 import com.voye.favoriteweathercasts.domain.repository.WeatherRepository
 import dagger.Binds
@@ -36,6 +38,12 @@ abstract class RepositoryModule {
     abstract fun bindLocationRepository(
         localLocationsRepositoryImpl: LocalLocationsRepositoryImpl
     ): LocationRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFavoriteLocationRepository(
+        favoriteLocalLocationsRepositoryImpl: FavoriteLocalLocationsRepositoryImpl
+    ): FavoriteLocationRepository
 
 
 }

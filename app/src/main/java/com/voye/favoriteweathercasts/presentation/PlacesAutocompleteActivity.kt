@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.VolleyLog.TAG
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.common.api.ApiException
@@ -59,6 +56,7 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var recentSearchTextView: TextView
     private lateinit var searchHistoryRecyclerView: RecyclerView
+    //private lateinit var saveToFavoritesButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +81,8 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
             //Toast.makeText(applicationContext, "${clickedLocation.city}", Toast.LENGTH_LONG).show()
             showWeatherWithRecentSearch(clickedLocation)
         })
+        //saveToFavoritesButton = findViewById(R.id.save_to_favorites_button)
+
 
 
         toolbar.setNavigationOnClickListener { v ->
@@ -222,6 +222,7 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
                 val result: GeocodingResult = gson.fromJson(results.getString(0), GeocodingResult::class.java)
                 //displayDialog(placePrediction, result)
                 showWeather(placePrediction, result)
+                //saveToFavoritesButton.setOnClickListener {viewModel.saveFavoritePlace(placePrediction, result)}
             } catch (e: JSONException) {
                 e.printStackTrace()
             }

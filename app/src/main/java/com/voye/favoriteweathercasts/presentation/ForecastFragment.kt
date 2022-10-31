@@ -30,7 +30,7 @@ class ForecastFragment : Fragment() {
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
                 when (position) {
                     0 -> tab.text = "Today"
-                    1 -> tab.text = "Tomorrow"
+                    1 -> tab.text = "48 hours"
                     2 -> tab.text = "8 Days"
                 }
             }).attach()

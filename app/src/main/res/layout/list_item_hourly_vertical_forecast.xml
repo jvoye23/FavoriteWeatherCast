@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/hourly_weather_icon"
+        android:layout_width="54dp"
+        android:layout_height="51dp"
+
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/hourly_temperature_textView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/clear_sky_01d" />
+
+    <TextView
+        android:id="@+id/hourly_temperature_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="TextView"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="17°" />
+
+    <TextView
+        android:id="@+id/hour_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@+id/hourly_description_textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="22:00" />
+
+    <TextView
+        android:id="@+id/hourly_rain_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginEnd="16dp"
+        android:text="80%"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/hourly_weather_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="80%" />
+
+    <TextView
+        android:id="@+id/hourly_description_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="clear sky"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hour_textView"
+        tools:text="clear sky" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

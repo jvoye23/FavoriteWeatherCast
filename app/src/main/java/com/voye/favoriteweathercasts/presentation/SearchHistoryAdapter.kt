@@ -23,7 +23,7 @@ class SearchHistoryAdapter (val searchHistoryClickListener: SearchHistoryOnClick
             oldItem: LocationDTO,
             newItem: LocationDTO
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.city == newItem.city
         }
 
         override fun areContentsTheSame(

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.voye.favoriteweathercasts.databinding.FragmentEightdayForecastBinding
@@ -35,7 +36,9 @@ class EightDayForecastFragment : Fragment() {
         val sevenDayForecastAdapter = EightDayForecastAdapter()
 
         recyclerView = binding.sevenDayForecastList
+        val layoutManager= LinearLayoutManager(context)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
         recyclerView.adapter = sevenDayForecastAdapter
 
         viewModel.weatherDataResponse.observe(viewLifecycleOwner){
