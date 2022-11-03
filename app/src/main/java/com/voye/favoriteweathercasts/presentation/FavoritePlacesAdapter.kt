@@ -15,8 +15,6 @@ import com.voye.favoriteweathercasts.data.local.LocationDTO
 /**
  * A [RecyclerView.Adapter]
  */
-
-
 class FavoritePlacesAdapter(val favoritePlaceOnClickListener: FavoritePlaceOnClickListener): RecyclerView.Adapter<FavoritePlacesAdapter.FavoritePlaceAdapterViewHolder>() {
 
     private val diffUtil = object : DiffUtil.ItemCallback<FavoriteLocationDTO>() {
@@ -43,8 +41,6 @@ class FavoritePlacesAdapter(val favoritePlaceOnClickListener: FavoritePlaceOnCli
         return FavoritePlaceAdapterViewHolder(view)
     }
 
-
-
     override fun onBindViewHolder(holder: FavoritePlaceAdapterViewHolder, position: Int) {
         val data = asyncListDiffer.currentList[position]
         holder.favoriteCity.text = data.city
@@ -58,11 +54,9 @@ class FavoritePlacesAdapter(val favoritePlaceOnClickListener: FavoritePlaceOnCli
         return asyncListDiffer.currentList.size
     }
 
-
     class FavoritePlaceAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val favoriteCity: TextView = itemView.findViewById(R.id.favoriteCity_textView)
         val favoriteCountry: TextView = itemView.findViewById(R.id.favoriteCountry_textView)
-
     }
 
     class FavoritePlaceOnClickListener(val clickListener: (favoriteLocationDTO: FavoriteLocationDTO) -> Unit) {

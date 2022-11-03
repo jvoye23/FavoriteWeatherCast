@@ -47,8 +47,6 @@ class FavoritesFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        //(activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
         val binding = FragmentFavoritesBinding.inflate(inflater)
         val animation = AnimationUtils.loadAnimation(context, R.anim.circle_explosion_anim).apply {
             duration = 700
@@ -155,8 +153,4 @@ class FavoritesFragment() : Fragment() {
             super.onScrolled(recyclerView, dx, dy)
         }
     }
-
-
-
-
 }

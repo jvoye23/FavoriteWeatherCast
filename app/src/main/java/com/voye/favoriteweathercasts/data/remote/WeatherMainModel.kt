@@ -90,10 +90,6 @@ data class Snow(
     @Json(name = "1h")val lastHourSnow: Double?
 )
 
-
-
-
-
 data class Weather(
     val id: Int,
     val main: String,

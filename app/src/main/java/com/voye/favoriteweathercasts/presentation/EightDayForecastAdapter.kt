@@ -45,11 +45,7 @@ class EightDayForecastAdapter: RecyclerView.Adapter<EightDayForecastAdapter.View
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: EightDayForecastAdapter.ViewHolder, position: Int) {
         val data = asyncListDiffer.currentList[position]
-
-
         val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, d. MMM")
-
-
         val dayOfTheWeek = DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(data.dt))
         val localZoneDateTime = ZonedDateTime.parse(dayOfTheWeek).withZoneSameInstant(ZoneId.systemDefault())
 
@@ -60,8 +56,6 @@ class EightDayForecastAdapter: RecyclerView.Adapter<EightDayForecastAdapter.View
         holder.dailyMinTemperature.text = data.temp.min.toInt().toString() + "°C"
         //holder.dailyRain.text = data.rain?.toInt().toString() + "%"
         holder.dailyRain.text = "${(data.pop * 100).toInt()}" + "%"
-
-
 
         holder.dailyWeatherIcon.setImageResource(when(data.weather[0].icon){
             "01d" -> R.drawable.clear_sky_01d
@@ -98,5 +92,4 @@ class EightDayForecastAdapter: RecyclerView.Adapter<EightDayForecastAdapter.View
         val dailyMaxTemperature: TextView = itemView.findViewById(R.id.daily_max_temperature_textView)
         val dailyMinTemperature: TextView = itemView.findViewById(R.id.daily_min_temperature_textView)
     }
-
 }

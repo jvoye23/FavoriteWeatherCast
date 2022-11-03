@@ -23,18 +23,14 @@ class EightDayForecastFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private val viewModel: WeatherViewModel by activityViewModels()
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
         val binding = FragmentEightdayForecastBinding.inflate(inflater)
         val sevenDayForecastAdapter = EightDayForecastAdapter()
-
         recyclerView = binding.sevenDayForecastList
         val layoutManager= LinearLayoutManager(context)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -44,10 +40,6 @@ class EightDayForecastFragment : Fragment() {
         viewModel.weatherDataResponse.observe(viewLifecycleOwner){
             sevenDayForecastAdapter.saveData(it.daily)
         }
-
-
-
         return binding.root
-
     }
 }

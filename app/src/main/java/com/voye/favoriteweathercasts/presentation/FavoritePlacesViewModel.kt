@@ -22,9 +22,6 @@ class FavoritePlacesViewModel @Inject constructor(
     val favoritePlacesList: LiveData<List<FavoriteLocationDTO>>
         get() = _favoritePlacesList
 
-
-
-
     fun getFavoritePlaces(){
         viewModelScope.launch {
             val favoritePlacesData = repository.getFavoriteLocations()
@@ -39,6 +36,4 @@ class FavoritePlacesViewModel @Inject constructor(
             }
         }
     }
-
-
 }
