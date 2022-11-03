@@ -49,6 +49,9 @@ class FavoritePlacesAdapter(val favoritePlaceOnClickListener: FavoritePlaceOnCli
         val data = asyncListDiffer.currentList[position]
         holder.favoriteCity.text = data.city
         holder.favoriteCountry.text = data.country
+        holder.itemView.setOnClickListener {
+            favoritePlaceOnClickListener.onClick(data)
+        }
     }
 
     override fun getItemCount(): Int {

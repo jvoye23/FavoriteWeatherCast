@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.voye.favoriteweathercasts.databinding.FragmentForecastBinding
@@ -20,6 +21,7 @@ class ForecastFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentForecastBinding.inflate(inflater, container, false)
         val view = binding.root
         val tabLayout = binding.forecastTabs
@@ -45,6 +47,9 @@ class ForecastFragment : Fragment() {
     override fun onDestroyView(){
         super.onDestroyView()
         _binding = null
+
     }
+
+
 
 }

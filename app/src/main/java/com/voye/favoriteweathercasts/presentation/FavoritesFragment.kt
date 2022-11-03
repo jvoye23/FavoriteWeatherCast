@@ -1,20 +1,33 @@
 package com.voye.favoriteweathercasts.presentation
 
+import android.app.Application
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.voye.favoriteweathercasts.MainActivity
+import com.voye.favoriteweathercasts.R
+import com.voye.favoriteweathercasts.data.local.FavoriteLocationDTO
 import com.voye.favoriteweathercasts.databinding.FragmentFavoritesBinding
+import com.voye.favoriteweathercasts.utils.startAnimation
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
  * This [Fragment] will show the recycler view with user's favorite cities.
@@ -26,6 +39,7 @@ class FavoritesFragment() : Fragment() {
     private lateinit var recylerView: RecyclerView
     private val viewModel: FavoritePlacesViewModel by activityViewModels()
     private lateinit var favoritePlaceAdapter: FavoritePlacesAdapter
+    private lateinit var addFab: ExtendedFloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,20 +47,58 @@ class FavoritesFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        //(activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
         val binding = FragmentFavoritesBinding.inflate(inflater)
+        val animation = AnimationUtils.loadAnimation(context, R.anim.circle_explosion_anim).apply {
+            duration = 700
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+
+
+        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
-        //binding.viewModel = viewModel
+
 
         // Initialize members
         recylerView = binding.favoritePlacesRecylerView
+        addFab = binding.addFab
+        addFab.setOnClickListener {
+            binding.addFab.isVisible = false
+            binding.circle.isVisible = true
+            binding.circle.startAnimation(animation){
+                //binding.root.setBackgroundColor(ContextCompat.getColor(context!!, com.google.android.libraries.places.R.color.quantum_purple))
+                binding.circle.isVisible = false
+                val intent = Intent(context, PlacesAutocompleteActivity::class.java)
+                startActivity(intent)
+                binding.addFab.isVisible = true
+            }
+        }
+
         favoritePlaceAdapter = FavoritePlacesAdapter(FavoritePlacesAdapter.FavoritePlaceOnClickListener{
             clickedFavoriteLocation ->
-            Toast.makeText(context, "${clickedFavoriteLocation.city}", Toast.LENGTH_LONG).show()
+            showWeatherOfFavoritePlace(clickedFavoriteLocation)
         })
 
         initFavoritePlacesRecycleverView()
-
-
+        viewModel.getFavoritePlaces()
+        recylerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                // Scroll down
+                if (dy > 10 && addFab.isExtended){
+                    addFab.shrink()
+                }
+                // Scroll up
+                if (dy < -10 && !addFab.isExtended){
+                    addFab.extend()
+                }
+                // At the top
+                if (!recyclerView.canScrollVertically(-1)){
+                    addFab.extend()
+                }
+            }
+        })
 
         return binding.root
     }
@@ -59,7 +111,60 @@ class FavoritesFragment() : Fragment() {
         viewModel.favoritePlacesList.observe(viewLifecycleOwner){
             favoritePlaceAdapter.saveData(it)
         }
+
+
+
     }
+
+    private fun showWeatherOfFavoritePlace(favoriteLocationDTO: FavoriteLocationDTO){
+        var latitude = favoriteLocationDTO.latitude
+        var longitude = favoriteLocationDTO.longitude
+        var city = favoriteLocationDTO.city
+        var country = favoriteLocationDTO.country
+        var cityAndCountry = "${city}, ${country}"
+        val bundle = Bundle()
+        bundle.putDouble("latitude_key", latitude!!)
+        bundle.putDouble("longitude_key", longitude!!)
+        bundle.putString("city_and_country_key", cityAndCountry)
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+    }
+
+    class ExtendedFloatingActionButtonScrollListener(
+        private val floatingActionButton: ExtendedFloatingActionButton
+    ) : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE
+                && !floatingActionButton.isExtended
+                && recyclerView.computeVerticalScrollOffset() == 0
+            ) {
+                floatingActionButton.extend()
+            }
+            super.onScrollStateChanged(recyclerView, newState)
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy != 0 && floatingActionButton.isExtended) {
+                floatingActionButton.shrink()
+            }
+            super.onScrolled(recyclerView, dx, dy)
+        }
+    }
+
+
 
 
 }

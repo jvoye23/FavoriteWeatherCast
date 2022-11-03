@@ -9,14 +9,16 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.voye.favoriteweathercasts.R
+import com.voye.favoriteweathercasts.utils.GeocodingResult
 import java.util.ArrayList
 
 /**
  * A [RecyclerView.Adapter] for a [com.google.android.libraries.places.api.model.AutocompletePrediction].
  */
-class PlacePredictionAdapter : RecyclerView.Adapter<PlacePredictionAdapter.PlacePredictionViewHolder>() {
+class PlacePredictionAdapter: RecyclerView.Adapter<PlacePredictionAdapter.PlacePredictionViewHolder>() {
     private val predictions: MutableList<AutocompletePrediction> = ArrayList()
     var onPlaceClickListener: ((AutocompletePrediction) -> Unit)? = null
+    var onFavoriteClickListener: ((AutocompletePrediction) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacePredictionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -27,7 +29,9 @@ class PlacePredictionAdapter : RecyclerView.Adapter<PlacePredictionAdapter.Place
     override fun onBindViewHolder(holder: PlacePredictionViewHolder, position: Int) {
         val place = predictions[position]
         holder.setPrediction(place)
-        holder.saveFavoriteLocationButton
+        holder.saveFavoriteLocationButton.setOnClickListener {
+            onFavoriteClickListener?.invoke(place)
+        }
 
         holder.itemView.setOnClickListener {
             onPlaceClickListener?.invoke(place)
@@ -60,5 +64,8 @@ class PlacePredictionAdapter : RecyclerView.Adapter<PlacePredictionAdapter.Place
         fun onPlaceClicked(place: AutocompletePrediction)
     }
 
+    interface OnFavoriteClickListener {
+        fun onFavoriteClicked(place: AutocompletePrediction)
+    }
 
 }

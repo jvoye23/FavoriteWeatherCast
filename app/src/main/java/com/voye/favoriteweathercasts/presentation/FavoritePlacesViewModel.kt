@@ -23,23 +23,7 @@ class FavoritePlacesViewModel @Inject constructor(
         get() = _favoritePlacesList
 
 
-    /**
-     * Save the favorite place to the data source
-     */
-    fun saveFavoritePlace(favoriteLocation: FavoriteLocationDataItem){
-        viewModelScope.launch {
-            repository.saveFavoriteLocation(
-                FavoriteLocationDTO(
-                    favoriteLocation.city,
-                    favoriteLocation.country,
-                    favoriteLocation.latitude,
-                    favoriteLocation.longitude,
-                    favoriteLocation.created,
-                    favoriteLocation.id
-                )
-            )
-        }
-    }
+
 
     fun getFavoritePlaces(){
         viewModelScope.launch {

@@ -28,6 +28,7 @@ import com.google.gson.GsonBuilder
 import com.voye.favoriteweathercasts.BuildConfig
 import com.voye.favoriteweathercasts.MainActivity
 import com.voye.favoriteweathercasts.R
+import com.voye.favoriteweathercasts.data.local.FavoriteLocationDataItem
 import com.voye.favoriteweathercasts.data.local.LocationDTO
 import com.voye.favoriteweathercasts.data.local.LocationDataItem
 import com.voye.favoriteweathercasts.utils.GeocodingResult
@@ -81,9 +82,6 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
             //Toast.makeText(applicationContext, "${clickedLocation.city}", Toast.LENGTH_LONG).show()
             showWeatherWithRecentSearch(clickedLocation)
         })
-        //saveToFavoritesButton = findViewById(R.id.save_to_favorites_button)
-
-
 
         toolbar.setNavigationOnClickListener { v ->
             finish()
@@ -92,11 +90,8 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         initMyAutocompleteSearchView(myAutoCompleteSearchView)
         viewModel.getSearchHistory()
         initSearchHistoryRecylerView()
-
         initRecyclerView()
     }
-
-
 
     // this event will enable the back
     // function to the button on press
@@ -167,6 +162,7 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         recyclerView.adapter = placePredictionAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
         placePredictionAdapter.onPlaceClickListener = { geocodePlaceAndDisplay(it) }
+        placePredictionAdapter.onFavoriteClickListener = { addPlaceToFavorite(it) }
     }
 
     private fun getPlacePredictions(query: String) {
@@ -234,6 +230,38 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         queue.add(request)
     }
 
+    private fun addPlaceToFavorite(placePrediction: AutocompletePrediction){
+        // Construct the request URL
+        val apiKey = BuildConfig.PLACES_API_KEY
+        val requestURL =
+            "https://maps.googleapis.com/maps/api/geocode/json?place_id=${placePrediction.placeId}&key=$apiKey"
+
+        // Use the HTTP request URL for Geocoding API to get geographic coordinates for the place
+        val request = JsonObjectRequest(Request.Method.GET, requestURL, null, { response ->
+            try {
+                // Inspect the value of "results" and make sure it's not empty
+                val results: JSONArray = response.getJSONArray("results")
+                if (results.length() == 0) {
+                    Log.w(TAG, "No results from geocoding request.")
+                    return@JsonObjectRequest
+                }
+
+                // Use Gson to convert the response JSON object to a POJO
+                val result: GeocodingResult = gson.fromJson(results.getString(0), GeocodingResult::class.java)
+                //displayDialog(placePrediction, result)
+                saveFavorite(placePrediction, result)
+                //saveToFavoritesButton.setOnClickListener {viewModel.saveFavoritePlace(placePrediction, result)}
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }, { error ->
+            Log.e(TAG, "Request failed", error)
+        })
+
+        // Add the request to the Request queue.
+        queue.add(request)
+    }
+
     private fun displayDialog(place: AutocompletePrediction, result: GeocodingResult): Unit {
         AlertDialog.Builder(this)
             .setTitle(place.getPrimaryText(null))
@@ -283,6 +311,24 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         viewModel.saveLocation(locationItem)
 
         startActivity(intent)
+
+    }
+
+    private fun saveFavorite(place: AutocompletePrediction, result: GeocodingResult){
+        var latitude = result.geometry?.location?.latitude
+        var longitude = result.geometry?.location?.longitude
+        var city = place.getPrimaryText(null).toString()
+        var country = place.getSecondaryText(null).toString()
+
+        val favoriteLocationItem = FavoriteLocationDataItem(
+            city = city,
+            country = country,
+            latitude = latitude,
+            longitude = longitude,
+            created = LocalDateTime.now().toString()
+        )
+        viewModel.saveFavoritePlace(favoriteLocationItem)
+
 
     }
 
