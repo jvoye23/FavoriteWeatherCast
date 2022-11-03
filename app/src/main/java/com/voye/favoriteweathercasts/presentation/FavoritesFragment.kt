@@ -55,11 +55,8 @@ class FavoritesFragment() : Fragment() {
             interpolator = AccelerateDecelerateInterpolator()
         }
 
-
-
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
-
 
         // Initialize members
         recylerView = binding.favoritePlacesRecylerView
