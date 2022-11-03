@@ -21,11 +21,10 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="160dp"
-            android:text="Add"
+            android:text="@string/fab_add_button"
             app:icon="@drawable/ic_baseline_add_location_alt_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-             />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <View
             android:id="@+id/circle"
@@ -39,7 +38,6 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-
         </View>
 
 
