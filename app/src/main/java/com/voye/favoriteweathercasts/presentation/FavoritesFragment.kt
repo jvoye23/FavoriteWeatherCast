@@ -63,7 +63,6 @@ class FavoritesFragment() : Fragment() {
             binding.addFab.isVisible = false
             binding.circle.isVisible = true
             binding.circle.startAnimation(animation){
-                //binding.root.setBackgroundColor(ContextCompat.getColor(context!!, com.google.android.libraries.places.R.color.quantum_purple))
                 binding.circle.isVisible = false
                 val intent = Intent(context, PlacesAutocompleteActivity::class.java)
                 startActivity(intent)
@@ -77,6 +76,7 @@ class FavoritesFragment() : Fragment() {
         })
 
         initFavoritePlacesRecycleverView()
+
         viewModel.getFavoritePlaces()
         recylerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -133,24 +133,4 @@ class FavoritesFragment() : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
 
-    class ExtendedFloatingActionButtonScrollListener(
-        private val floatingActionButton: ExtendedFloatingActionButton
-    ) : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            if (newState == RecyclerView.SCROLL_STATE_IDLE
-                && !floatingActionButton.isExtended
-                && recyclerView.computeVerticalScrollOffset() == 0
-            ) {
-                floatingActionButton.extend()
-            }
-            super.onScrollStateChanged(recyclerView, newState)
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (dy != 0 && floatingActionButton.isExtended) {
-                floatingActionButton.shrink()
-            }
-            super.onScrolled(recyclerView, dx, dy)
-        }
-    }
 }
