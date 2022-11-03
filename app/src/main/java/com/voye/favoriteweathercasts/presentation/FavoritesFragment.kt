@@ -111,17 +111,14 @@ class FavoritesFragment() : Fragment() {
         viewModel.favoritePlacesList.observe(viewLifecycleOwner){
             favoritePlaceAdapter.saveData(it)
         }
-
-
-
     }
 
     private fun showWeatherOfFavoritePlace(favoriteLocationDTO: FavoriteLocationDTO){
-        var latitude = favoriteLocationDTO.latitude
-        var longitude = favoriteLocationDTO.longitude
-        var city = favoriteLocationDTO.city
-        var country = favoriteLocationDTO.country
-        var cityAndCountry = "${city}, ${country}"
+        val latitude = favoriteLocationDTO.latitude
+        val longitude = favoriteLocationDTO.longitude
+        val city = favoriteLocationDTO.city
+        val country = favoriteLocationDTO.country
+        val cityAndCountry = "${city}, ${country}"
         val bundle = Bundle()
         bundle.putDouble("latitude_key", latitude!!)
         bundle.putDouble("longitude_key", longitude!!)
@@ -129,13 +126,11 @@ class FavoritesFragment() : Fragment() {
         val intent = Intent(context, MainActivity::class.java)
         intent.putExtras(bundle)
         startActivity(intent)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
-
     }
 
     override fun onDestroyView() {
