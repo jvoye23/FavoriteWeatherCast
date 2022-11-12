@@ -99,21 +99,8 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        // Set listeners for Autocomplete activity
-        val mySearchTextView = binding.searchTextView
-        mySearchTextView.setOnClickListener {
-            val intent = Intent(this, PlacesAutocompleteActivity::class.java)
-            startActivity(intent)
-        }
 
-        val mySearchButton = binding.searchButton
-        mySearchButton.setOnClickListener {
-            val intent = Intent(this, PlacesAutocompleteActivity::class.java)
-            startActivity(intent)
-        }
 
-        val toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
         //Navigation.findNavController(this, R.id.nav_host_fragment)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         setupWithNavController(binding.bottomNavigationView, navController)

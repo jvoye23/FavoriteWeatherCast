@@ -20,11 +20,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="160dp"
+            android:layout_marginBottom="100dp"
             android:text="@string/fab_add_button"
             app:icon="@drawable/ic_baseline_star_24px"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <View
             android:id="@+id/circle"
@@ -39,9 +39,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
         </View>
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

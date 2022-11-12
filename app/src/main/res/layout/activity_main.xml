@@ -11,9 +11,10 @@
             type="com.voye.favoriteweathercasts.presentation.WeatherViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progress_bar_background"
@@ -37,13 +38,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+       <!-- <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            tools:context=".MainActivity">
+            tools:context=".MainActivity">-->
 
-            <com.google.android.material.appbar.AppBarLayout
+           <!-- <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -94,7 +95,9 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
-            </com.google.android.material.appbar.AppBarLayout>
+            </com.google.android.material.appbar.AppBarLayout>-->
+
+
 
 
             <fragment
@@ -107,25 +110,28 @@
                 app:navGraph="@navigation/nav_graph"
                 tools:layout="@layout/fragment_today_forecast" />
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:visibility="visible"
+            app:itemIconSize="28dp"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/navigation">
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNavigationView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:visibility="visible"
-                app:itemIconSize="28dp"
-                app:labelVisibilityMode="labeled"
-                app:menu="@menu/navigation">
-
-            </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <!--</androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

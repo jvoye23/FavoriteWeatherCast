@@ -1,24 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/forecastTabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal">
-        </com.google.android.material.tabs.TabLayout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.voye.favoriteweathercasts.presentation.WeatherViewModel" />
+    </data>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/background_border"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/search_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:background="@android:color/transparent"
+                            android:textAlignment="viewStart"
+                            app:srcCompat="@android:drawable/ic_menu_search">
+
+                        </ImageButton>
+
+                        <TextView
+                            android:id="@+id/search_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="14dp"
+                            android:gravity="center_vertical"
+                            android:text='@{viewModel.currentLocationText}'
+                            android:textSize="16sp"
+                            tools:text="Hamburg, DE">
+
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.Toolbar>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/forecastTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </layout>
