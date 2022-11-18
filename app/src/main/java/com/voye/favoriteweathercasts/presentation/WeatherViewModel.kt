@@ -1,5 +1,6 @@
 package com.voye.favoriteweathercasts.presentation
 
+import android.Manifest.permission.INTERNET
 import android.app.Application
 import android.graphics.drawable.Drawable
 import android.location.Location
@@ -127,6 +128,10 @@ class WeatherViewModel @Inject constructor(
     val progressBarIndicator: LiveData<Boolean>
         get() = _progressBarIndicator
 
+    private val _isNetWorkAvailable = MutableLiveData<Boolean>()
+    val isNetworkAvailable: LiveData<Boolean>
+        get() = isNetworkAvailable
+
 
     fun getMyLocation() {
         viewModelScope.launch {
@@ -172,6 +177,16 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
 
             val location = locationTracker.getCurrentLocation()
+            if (location != null) {
+                Log.d("------>Offline_Location", "lat: ${location.latitude.toString()} lon: ${location.longitude.toString()}")
+            }
+
+            
+
+            /*if (location == null){
+                _isNetWorkAvailable.value = false
+            } else _isNetWorkAvailable.value = true*/
+
             val myWeatherDataResponse =
                 location?.let { repository.getWeatherData(it.latitude, it.longitude) }
 

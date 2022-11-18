@@ -49,11 +49,20 @@ class MainActivity : AppCompatActivity() {
             if (viewModel.progressBarIndicator.value == true){
                 binding.progressSpinner.visibility = ProgressBar.VISIBLE
                 binding.progressBarBackground.visibility = View.VISIBLE
+
             } else {
                 binding.progressSpinner.visibility = ProgressBar.GONE
                 binding.progressBarBackground.visibility = View.GONE
             }
         }
+
+        /*viewModel.isNetworkAvailable.observe(this){
+            if (viewModel.isNetworkAvailable.value == false){
+                binding.noNetworkBackground.visibility = View.GONE
+            } else {
+                binding.noNetworkBackground.visibility = View.VISIBLE
+            }
+        }*/
 
         val bundle = intent.extras
 
