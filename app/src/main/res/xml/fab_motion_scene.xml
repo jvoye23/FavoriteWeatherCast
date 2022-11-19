@@ -14,7 +14,7 @@
     <!-- Constraints to apply at the start of the animation -->
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@+id/add_fab"
+            android:id="@+id/fab_wrap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -26,7 +26,7 @@
     <!-- Constraints to apply at the end of the animation -->
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@+id/add_fab"
+            android:id="@+id/fab_wrap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

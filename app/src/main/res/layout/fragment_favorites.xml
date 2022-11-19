@@ -14,18 +14,32 @@
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="4dp" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/add_fab"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/fab_wrap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="100dp"
-            android:text="@string/fab_add_button"
-            app:icon="@drawable/ic_baseline_star_24px"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="16dp">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/add_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+
+                android:text="@string/fab_add_button"
+                app:icon="@drawable/ic_baseline_star_24px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 
         <View
             android:id="@+id/circle"
