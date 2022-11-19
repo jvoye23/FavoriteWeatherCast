@@ -181,12 +181,6 @@ class WeatherViewModel @Inject constructor(
                 Log.d("------>Offline_Location", "lat: ${location.latitude.toString()} lon: ${location.longitude.toString()}")
             }
 
-            
-
-            /*if (location == null){
-                _isNetWorkAvailable.value = false
-            } else _isNetWorkAvailable.value = true*/
-
             val myWeatherDataResponse =
                 location?.let { repository.getWeatherData(it.latitude, it.longitude) }
 
