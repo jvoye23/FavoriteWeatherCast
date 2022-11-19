@@ -44,6 +44,8 @@ class WeatherViewModel @Inject constructor(
     private val application: Application
 ): ViewModel() {
 
+    // need cleanup
+
 
     private val _weatherDataResponse = MutableLiveData<WeatherData>()
     val weatherDataResponse: LiveData<WeatherData> get() =_weatherDataResponse
