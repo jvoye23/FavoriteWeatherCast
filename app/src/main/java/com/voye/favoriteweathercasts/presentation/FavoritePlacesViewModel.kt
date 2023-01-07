@@ -22,6 +22,10 @@ class FavoritePlacesViewModel @Inject constructor(
     val favoritePlacesList: LiveData<List<FavoriteLocationDTO>>
         get() = _favoritePlacesList
 
+    private val _isFavoritePlaceDeleted = MutableLiveData<Boolean>()
+    val isFavoritePlaceDeleted: LiveData<Boolean>
+        get() = _isFavoritePlaceDeleted
+
     fun getFavoritePlaces(){
         viewModelScope.launch {
             val favoritePlacesData = repository.getFavoriteLocations()
@@ -29,6 +33,7 @@ class FavoritePlacesViewModel @Inject constructor(
             when(favoritePlacesData){
                 is Result.Success ->{
                     _favoritePlacesList.value = favoritePlacesData.data
+
                 }
                 is Result.Error -> {
                     Log.d("Error", "Could not retrieve favorite places form database")
@@ -36,4 +41,20 @@ class FavoritePlacesViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteFavoritePlace(id: String){
+        viewModelScope.launch {
+            val result = repository.deleteFavoriteLocation(id)
+            when(result){
+                is Result.Success ->{
+                    _isFavoritePlaceDeleted.value = true
+                }
+                is Result.Error -> {
+                    Log.d("Error", "Could not delete favorite place")
+                }
+            }
+
+        }
+    }
+
 }

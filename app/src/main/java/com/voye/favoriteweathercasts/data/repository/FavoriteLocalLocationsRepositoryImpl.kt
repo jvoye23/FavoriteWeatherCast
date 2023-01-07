@@ -58,6 +58,19 @@ class FavoriteLocalLocationsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteFavoriteLocation(id: String): Result<Unit> = withContext(ioDispatcher) {
+        try {
+            val favoriteLocation = favoriteLocationsDao.deleteFavoriteLocationById(id)
+            if (favoriteLocation != null){
+                return@withContext Result.Success(favoriteLocation)
+            } else {
+                return@withContext Result.Error("Favorite Location not found to delete")
+            }
+        } catch (e: Exception){
+            return@withContext Result.Error(e.localizedMessage)
+        }
+    }
+
 
     /**
      * Insert a favoriteLocation in the db.

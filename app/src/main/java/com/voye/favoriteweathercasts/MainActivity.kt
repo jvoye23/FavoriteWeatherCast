@@ -108,8 +108,6 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-
-
         //Navigation.findNavController(this, R.id.nav_host_fragment)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         setupWithNavController(binding.bottomNavigationView, navController)

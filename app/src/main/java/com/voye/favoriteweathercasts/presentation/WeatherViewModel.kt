@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Build
 import android.util.Log
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,21 +13,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.voye.favoriteweathercasts.R
 import com.voye.favoriteweathercasts.data.responses.ApiResource
-import com.voye.favoriteweathercasts.data.responses.LocationNameDto
 import com.voye.favoriteweathercasts.domain.location.CoordinatesByLocationName
 import com.voye.favoriteweathercasts.domain.location.LocationName
-import com.voye.favoriteweathercasts.domain.location.LocationNameInfo
 import com.voye.favoriteweathercasts.domain.location.LocationTracker
-import com.voye.favoriteweathercasts.domain.repository.ReverseGeocodingRepository
 import com.voye.favoriteweathercasts.domain.repository.WeatherRepository
-import com.voye.favoriteweathercasts.domain.util.Resource
 import com.voye.favoriteweathercasts.domain.weather.Hourly
-import com.voye.favoriteweathercasts.domain.weather.HourlyModel
-import com.voye.favoriteweathercasts.domain.weather.HourlyWeatherInfo
 import com.voye.favoriteweathercasts.domain.weather.WeatherData
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -44,7 +36,7 @@ class WeatherViewModel @Inject constructor(
     private val application: Application
 ): ViewModel() {
 
-    // need cleanup
+
 
 
     private val _weatherDataResponse = MutableLiveData<WeatherData>()

@@ -11,5 +11,6 @@ interface FavoriteLocationRepository {
     suspend fun getFavoriteLocations(): Result<List<FavoriteLocationDTO>>
     suspend fun saveFavoriteLocation(location: FavoriteLocationDTO)
     suspend fun getFavoriteLocation(id: String): Result<FavoriteLocationDTO>
+    suspend fun deleteFavoriteLocation(id: String): Result<Unit>
     suspend fun deleteAllFavoriteLocations()
 }

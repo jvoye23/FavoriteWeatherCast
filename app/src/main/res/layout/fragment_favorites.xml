@@ -3,58 +3,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutDescription="@xml/fab_motion_scene">
+        android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favorite_places_recylerView"
+        <TextView
+            android:id="@+id/favorite_places_textView_label"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="4dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Favorite Cities"
+            android:textSize="32sp" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/fab_wrap"
+
+        <Button
+            android:id="@+id/manage_favorites_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="100dp"
-            android:layout_marginEnd="16dp">
+            android:text="Manage"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"/>
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/add_fab"
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutDescription="@xml/fab_motion_scene">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favorite_places_recylerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="4dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/fab_wrap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="100dp"
+                android:layout_marginEnd="16dp">
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/add_fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+
+                    android:text="@string/fab_add_button"
+                    app:icon="@drawable/ic_baseline_star_24px"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:id="@+id/circle"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-
-                android:text="@string/fab_add_button"
-                app:icon="@drawable/ic_baseline_star_24px"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="160dp"
+                android:background="@drawable/circle"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent">
+            </View>
+        </androidx.constraintlayout.motion.widget.MotionLayout>
 
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 
 
-        <View
-            android:id="@+id/circle"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="160dp"
-            android:background="@drawable/circle"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-        </View>
-    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 
 

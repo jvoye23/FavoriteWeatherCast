@@ -43,4 +43,11 @@ interface FavoriteLocationsDao {
     @Query("DELETE FROM favorite_locations")
     suspend fun deleteAllFavoriteLocations()
 
+    /**
+     * Delete selected favoriteLocation by Id.
+     */
+
+    @Query("DELETE FROM favorite_locations WHERE entry_id = :favoriteLocationId")
+    suspend fun deleteFavoriteLocationById(favoriteLocationId: String)
+
 }

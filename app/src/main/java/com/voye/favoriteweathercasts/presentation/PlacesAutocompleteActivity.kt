@@ -1,5 +1,6 @@
 package com.voye.favoriteweathercasts.presentation
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +12,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -57,7 +60,6 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var recentSearchTextView: TextView
     private lateinit var searchHistoryRecyclerView: RecyclerView
-    //private lateinit var saveToFavoritesButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +81,6 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
         searchHistoryRecyclerView = findViewById(R.id.recent_searches_recycler_view)
         searchHistoryAdapter = SearchHistoryAdapter(SearchHistoryAdapter.SearchHistoryOnClickListener{
             clickedLocation ->
-            //Toast.makeText(applicationContext, "${clickedLocation.city}", Toast.LENGTH_LONG).show()
             showWeatherWithRecentSearch(clickedLocation)
         })
 
@@ -260,6 +261,8 @@ class PlacesAutocompleteActivity: AppCompatActivity() {
 
         // Add the request to the Request queue.
         queue.add(request)
+
+        this.finish()
     }
 
     private fun displayDialog(place: AutocompletePrediction, result: GeocodingResult): Unit {

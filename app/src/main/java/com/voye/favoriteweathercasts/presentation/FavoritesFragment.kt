@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -40,6 +43,7 @@ class FavoritesFragment() : Fragment() {
     private val viewModel: FavoritePlacesViewModel by activityViewModels()
     private lateinit var favoritePlaceAdapter: FavoritePlacesAdapter
     private lateinit var addFab: ExtendedFloatingActionButton
+    private lateinit var manageFavoriteButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,32 +52,48 @@ class FavoritesFragment() : Fragment() {
     ): View? {
 
         val binding = FragmentFavoritesBinding.inflate(inflater)
-        val animation = AnimationUtils.loadAnimation(context, R.anim.circle_explosion_anim).apply {
-            duration = 700
-            interpolator = AccelerateDecelerateInterpolator()
-        }
 
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
-        binding.lifecycleOwner = this
+        //binding.lifecycleOwner = this
 
         // Initialize members
         recylerView = binding.favoritePlacesRecylerView
         addFab = binding.addFab
+
         addFab.setOnClickListener {
             binding.addFab.isVisible = false
-            binding.circle.isVisible = true
-            binding.circle.startAnimation(animation){
-                binding.circle.isVisible = false
-                val intent = Intent(context, PlacesAutocompleteActivity::class.java)
-                startActivity(intent)
-                binding.addFab.isVisible = true
-            }
+            val intent = Intent(context, PlacesAutocompleteActivity::class.java)
+            startActivity(intent)
+            binding.addFab.isVisible = true
         }
 
-        favoritePlaceAdapter = FavoritePlacesAdapter(FavoritePlacesAdapter.FavoritePlaceOnClickListener{
-            clickedFavoriteLocation ->
-            showWeatherOfFavoritePlace(clickedFavoriteLocation)
-        })
+        manageFavoriteButton = binding.manageFavoritesButton
+        manageFavoriteButton.setOnClickListener {
+
+            if (!favoritePlaceAdapter.isDeleteButtonVisible){
+                favoritePlaceAdapter.isDeleteButtonVisible = true
+                manageFavoriteButton.text = "Done"
+                recylerView.adapter = favoritePlaceAdapter
+                addFab.visibility = View.GONE
+
+            } else {
+                favoritePlaceAdapter.isDeleteButtonVisible = false
+                manageFavoriteButton.text = "Manage"
+                recylerView.adapter = favoritePlaceAdapter
+                addFab.visibility = View.VISIBLE
+            }
+
+        }
+
+        favoritePlaceAdapter = FavoritePlacesAdapter(
+            FavoritePlacesAdapter.FavoritePlaceOnClickListener {
+                    clickedFavoriteLocation -> showWeatherOfFavoritePlace(clickedFavoriteLocation)
+                    },
+            FavoritePlacesAdapter.DeleteFavoritePlaceOnClickListener {
+                clickedFavoriteLocation -> deleteMyFavoritePlace(clickedFavoriteLocation)
+
+            }
+        )
 
         initFavoritePlacesRecycleverView()
 
@@ -96,6 +116,16 @@ class FavoritesFragment() : Fragment() {
         })
 
         return binding.root
+    }
+
+    private fun deleteMyFavoritePlace(clickedFavoriteLocation: FavoriteLocationDTO) {
+        Log.d("---->DeleteFavorite", "Favorite: ${clickedFavoriteLocation.city}")
+        viewModel.deleteFavoritePlace(clickedFavoriteLocation.id)
+        viewModel.isFavoritePlaceDeleted.observe(viewLifecycleOwner){
+            if(viewModel.isFavoritePlaceDeleted.value == true){
+                Log.d("---->DeleteFavorite", "FavoriteDeleted: ${clickedFavoriteLocation.city}")
+            }
+        }
     }
 
     private fun initFavoritePlacesRecycleverView(){
@@ -123,7 +153,8 @@ class FavoritesFragment() : Fragment() {
         startActivity(intent)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+// this crashes the application due to Null Pointer Exception
+/*  override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
     }
@@ -131,6 +162,6 @@ class FavoritesFragment() : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
-    }
+    }*/
 
 }
