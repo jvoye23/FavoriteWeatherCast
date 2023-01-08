@@ -7,12 +7,12 @@
         android:icon="@drawable/rain_10d"
         android:title="@string/forecast">
     </item>
-    <item
+   <!-- <item
         android:id="@+id/mapsFragment"
         android:icon="@android:drawable/ic_menu_mapmode"
         android:title="@string/maps">
 
-    </item>
+    </item>-->
     <item
         android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_baseline_star_24px"

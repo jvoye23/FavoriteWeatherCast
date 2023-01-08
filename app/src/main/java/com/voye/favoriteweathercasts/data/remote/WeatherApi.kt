@@ -11,7 +11,7 @@ const val weatherApiKey = BuildConfig.WEATHER_API_KEY
 
 interface WeatherApi {
 
-    @GET("data/3.0/onecall?exclude=minutely&units=metric&lang=de&appid=$weatherApiKey")
+    @GET("data/3.0/onecall?exclude=minutely&units=metric&appid=$weatherApiKey")
     suspend fun getWeatherData(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double
