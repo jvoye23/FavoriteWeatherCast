@@ -6,3 +6,14 @@ A weather app that uses fetches weather data via RestAPI from https://openweathe
 
 You can search for any city in the world to retrieve the weather data by using the Google Places API. You can save your favorite places by storing into room database.
 By clicking the Manage button in your favorite lists you can delete your favorite place.
+
+# Build the app
+If you want to run the app you will need two API Keys
+
+1. https://openweathermap.org/api/one-call-3 
+2. Google Maps API Key
+
+You have to put the API Keys into your Gradle local.properties file.
+
+![image](https://user-images.githubusercontent.com/80949826/212474097-df8f0a87-33ff-4011-8770-a8d8124b54cc.png)
+
