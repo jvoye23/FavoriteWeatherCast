@@ -9,6 +9,7 @@ import com.voye.favoriteweathercasts.domain.repository.LocationRepository
 import com.voye.favoriteweathercasts.domain.util.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -30,8 +31,8 @@ class FavoriteLocalLocationsRepositoryImpl @Inject constructor(
      * Get the favoriteLocations list from the local db
      * @return Result the holds a Success with all the favoriteLocation or an Error object with the error message
      */
-    override suspend fun getFavoriteLocations(): Result<List<FavoriteLocationDTO>> = withContext(ioDispatcher) {
-        return@withContext try {
+    override fun getFavoriteLocations(): Result<Flow<List<FavoriteLocationDTO>>> {
+        return try {
             Result.Success(favoriteLocationsDao.getFavoriteLocations())
         }catch (ex: Exception){
             Result.Error(ex.localizedMessage)

@@ -10,6 +10,8 @@ import com.voye.favoriteweathercasts.data.local.FavoriteLocationDataItem
 import com.voye.favoriteweathercasts.domain.repository.FavoriteLocationRepository
 import com.voye.favoriteweathercasts.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,17 +29,17 @@ class FavoritePlacesViewModel @Inject constructor(
         get() = _isFavoritePlaceDeleted
 
     fun getFavoritePlaces(){
-        viewModelScope.launch {
-            val favoritePlacesData = repository.getFavoriteLocations()
-
-            when(favoritePlacesData){
-                is Result.Success ->{
-                    _favoritePlacesList.value = favoritePlacesData.data
-
-                }
-                is Result.Error -> {
-                    Log.d("Error", "Could not retrieve favorite places form database")
-                }
+        when( val favoritePlacesResult =
+            repository.getFavoriteLocations()){
+            is Result.Success -> {
+                favoritePlacesResult.data
+                    .onEach {
+                        _favoritePlacesList.value = it
+                    }
+                    .launchIn(viewModelScope)
+            }
+            is Result.Error -> {
+                Log.d("Error", "Could not retrieve favorite places from database")
             }
         }
     }

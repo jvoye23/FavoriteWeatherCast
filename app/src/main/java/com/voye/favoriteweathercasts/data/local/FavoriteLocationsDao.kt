@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Data Access Object for the favorite_locations table.
@@ -17,7 +18,7 @@ interface FavoriteLocationsDao {
      */
 
     @Query("SELECT * FROM favorite_locations")
-    suspend fun getFavoriteLocations(): List<FavoriteLocationDTO>
+    fun getFavoriteLocations(): Flow<List<FavoriteLocationDTO>>
 
     /**
      * @param favoriteLocationID the id of the location
