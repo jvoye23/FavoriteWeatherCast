@@ -19,6 +19,8 @@
         android:layout_height="match_parent"
         >
 
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/no_network_background"
             android:layout_width="match_parent"
@@ -38,26 +40,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/progress_bar_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            tools:visibility="gone">
 
-            <ProgressBar
-                android:id="@+id/progress_spinner"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
        <!-- <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -131,6 +114,30 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/nav_graph"
                 tools:layout="@layout/fragment_today_forecast" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/progress_bar_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/progressBackgroundColor"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:id="@+id/progress_spinner"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
