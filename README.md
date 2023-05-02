@@ -17,3 +17,12 @@ You have to put the API Keys into your Gradle local.properties file.
 
 ![image](https://user-images.githubusercontent.com/80949826/212474097-df8f0a87-33ff-4011-8770-a8d8124b54cc.png)
 
+# Screenshots
+
+![image](https://user-images.githubusercontent.com/80949826/235774907-9931ddc1-9069-4d3a-9758-80cff87b4663.png)
+
+![image](https://user-images.githubusercontent.com/80949826/235775129-661cccf6-1412-4471-943b-c7d3493e3863.png)
+
+
+
+
